@@ -7,18 +7,9 @@ site_dir: ../Learning_site
 theme:
   name: material
   palette:
-    - scheme: slate
-      primary: deep purple
-      accent: teal
-      toggle:
-        icon: material/weather-sunny
-        name: Switch to light mode
-    - scheme: default
-      primary: deep purple
-      accent: teal
-      toggle:
-        icon: material/weather-night
-        name: Switch to dark mode
+    scheme: slate
+    primary: deep purple
+    accent: teal
   font:
     text: Inter
     code: JetBrains Mono
