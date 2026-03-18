@@ -1,0 +1,1617 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://eharshit.github.io/Learning/DBMS/12_NO_SQL/">
+      
+      
+        <link rel="prev" href="../11_Indexing_DBMS/">
+      
+      
+        <link rel="next" href="../13_Types_of_Database/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
+    
+    
+      
+        <title>LEC 12 - NoSQL -  </title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#nosql" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title=" " class="md-header__button md-logo" aria-label=" " data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+             
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              LEC 12 - NoSQL
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title=" " class="md-nav__button md-logo" aria-label=" " data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+     
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DBMS
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    DBMS
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1_Introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LEC 1 - Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2_Architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LEC 2 - Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3_ER_model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LEC 3 - ER Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../4_Extended_ER/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LEC 4 - Extended ER
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../5_Relational_model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LEC 5 - Relational Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../6_Transform_ER_to_Relational%20Model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LEC 6 - ER to Relational Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../7_SQL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LEC 7 - SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../8_Normalisation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LEC 8 - Normalisation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../9_Transaction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LEC 9 - Transactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10_Atomicity%20and%20Durability%20in%20Transactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LEC 10 - Atomicity & Durability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11_Indexing_DBMS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LEC 11 - Indexing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LEC 12 - NoSQL
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LEC 12 - NoSQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-history-behind-nosql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. History behind NoSQL
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-nosql-databases-advantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. NoSQL Databases Advantages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. NoSQL Databases Advantages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-flexible-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Flexible Schema
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-horizontal-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. Horizontal Scaling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-high-availability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. High Availability
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-easy-insert-and-read-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D. Easy Insert and Read Operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e-caching-mechanism" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        E. Caching Mechanism
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f-nosql-use-case-is-more-for-cloud-applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F. NoSQL use case is more for Cloud applications.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-when-to-use-nosql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. When to use NoSQL?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-nosql-db-misconceptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. NoSQL DB Misconceptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-types-of-nosql-data-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Types of NoSQL Data Models
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Types of NoSQL Data Models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-key-value-stores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Key-Value Stores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-column-oriented-columnar-c-store-wide-column" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Column-Oriented / Columnar / C-Store / Wide-Column
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-document-based-stores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Document Based Stores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-graph-based-stores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Graph Based Stores
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-nosql-databases-disadvantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. NoSQL Databases Disadvantages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. NoSQL Databases Disadvantages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-redundancy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Redundancy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#all-type-of-nosql-data-model-doesnt-fulfil-all-of-your-application-needs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        All type of NoSQL Data model doesn't fulfil all of your application needs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-sql-vs-nosql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. SQL vs NoSQL
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13_Types_of_Database/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LEC 13 - Types of Databases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14_Clustering_in_DBMS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LEC 14 - Clustering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15_Partitioning%20%26%20Sharding%28DB%20Optimization%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LEC 15 - Partitioning & Sharding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16_CAP_theorem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LEC 16 - CAP Theorem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-history-behind-nosql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. History behind NoSQL
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-nosql-databases-advantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. NoSQL Databases Advantages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. NoSQL Databases Advantages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-flexible-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Flexible Schema
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-horizontal-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. Horizontal Scaling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-high-availability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. High Availability
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-easy-insert-and-read-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D. Easy Insert and Read Operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e-caching-mechanism" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        E. Caching Mechanism
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f-nosql-use-case-is-more-for-cloud-applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F. NoSQL use case is more for Cloud applications.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-when-to-use-nosql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. When to use NoSQL?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-nosql-db-misconceptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. NoSQL DB Misconceptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-types-of-nosql-data-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Types of NoSQL Data Models
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Types of NoSQL Data Models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-key-value-stores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Key-Value Stores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-column-oriented-columnar-c-store-wide-column" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Column-Oriented / Columnar / C-Store / Wide-Column
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-document-based-stores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Document Based Stores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-graph-based-stores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Graph Based Stores
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-nosql-databases-disadvantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. NoSQL Databases Disadvantages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. NoSQL Databases Disadvantages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-redundancy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Redundancy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#all-type-of-nosql-data-model-doesnt-fulfil-all-of-your-application-needs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        All type of NoSQL Data model doesn't fulfil all of your application needs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-sql-vs-nosql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. SQL vs NoSQL
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="nosql">NoSQL<a class="headerlink" href="#nosql" title="Permanent link">&para;</a></h1>
+<h2 id="1-overview">1. Overview<a class="headerlink" href="#1-overview" title="Permanent link">&para;</a></h2>
+<ul>
+<li>NoSQL databases (aka "not only SQL") are non-tabular databases and store data differently than relational tables. NoSQL databases come in a variety of types based on their data model. The main types are document, key-value, wide-column, and graph. They provide flexible schemas and scale easily with large amounts of data and high user loads.</li>
+<li>They are schema free.</li>
+<li>Data structures used are not tabular, they are more flexible, has the ability to adjust dynamically.</li>
+<li>Can handle huge amount of data (big data).</li>
+<li>Most of the NoSQL are open sources and has the capability of horizontal scaling.</li>
+<li>It just stores data in some format other than relational.</li>
+</ul>
+<hr />
+<h2 id="2-history-behind-nosql">2. History behind NoSQL<a class="headerlink" href="#2-history-behind-nosql" title="Permanent link">&para;</a></h2>
+<ul>
+<li>NoSQL databases emerged in the late 2000s as the cost of storage dramatically decreased. Gone were the days of needing to create a complex, difficult-to-manage data model in order to avoid data duplication. Developers (rather than storage) were becoming the primary cost of software development, so NoSQL databases optimised for developer productivity.</li>
+<li>Data becoming unstructured more, hence structuring (defining schema in advance) them had becoming costly.</li>
+<li>NoSQL databases allow developers to store huge amounts of unstructured data, giving them a lot of flexibility.</li>
+<li>Recognising the need to rapidly adapt to changing requirements in a software system. Developers needed the ability to iterate quickly and make changes throughout their software stack — all the way down to the database. NoSQL databases gave them this flexibility.</li>
+<li>Cloud computing also rose in popularity, and developers began using public clouds to host their applications and data. They wanted the ability to distribute data across multiple servers and regions to make their applications resilient, to scale out instead of scale up, and to intelligently geo-place their data. Some NoSQL databases like MongoDB provide these capabilities.</li>
+</ul>
+<hr />
+<h2 id="3-nosql-databases-advantages">3. NoSQL Databases Advantages<a class="headerlink" href="#3-nosql-databases-advantages" title="Permanent link">&para;</a></h2>
+<h3 id="a-flexible-schema">A. Flexible Schema<a class="headerlink" href="#a-flexible-schema" title="Permanent link">&para;</a></h3>
+<ul>
+<li>RDBMS has pre-defined schema, which become an issue when we do not have all the data with us or we need to change the schema. It's a huge task to change schema on the go.</li>
+</ul>
+<h3 id="b-horizontal-scaling">B. Horizontal Scaling<a class="headerlink" href="#b-horizontal-scaling" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Horizontal scaling, also known as scale-out, refers to bringing on additional nodes to share the load. This is difficult with relational databases due to the difficulty in spreading out related data across nodes. With non-relational databases, this is made simpler since collections are self-contained and not coupled relationally. This allows them to be distributed across nodes more simply, as queries do not have to "join" them together across nodes.</li>
+<li>Scaling horizontally is achieved through Sharding OR Replica-sets.</li>
+</ul>
+<h3 id="c-high-availability">C. High Availability<a class="headerlink" href="#c-high-availability" title="Permanent link">&para;</a></h3>
+<ul>
+<li>NoSQL databases are highly available due to its auto replication feature i.e. whenever any kind of failure happens data replicates itself to the preceding consistent state.</li>
+<li>If a server fails, we can access that data from another server as well, as in NoSQL database data is stored at multiple servers.</li>
+</ul>
+<h3 id="d-easy-insert-and-read-operations">D. Easy Insert and Read Operations<a class="headerlink" href="#d-easy-insert-and-read-operations" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Queries in NoSQL databases can be faster than SQL databases. Why? Data in SQL databases is typically normalised, so queries for a single object or entity require you to join data from multiple tables. As your tables grow in size, the joins can become expensive. However, data in NoSQL databases is typically stored in a way that is optimised for queries. The rule of thumb when you use MongoDB is data that is accessed together should be stored together. Queries typically do not require joins, so the queries are very fast.</li>
+<li>But difficult delete or update operations.</li>
+</ul>
+<h3 id="e-caching-mechanism">E. Caching Mechanism<a class="headerlink" href="#e-caching-mechanism" title="Permanent link">&para;</a></h3>
+<h3 id="f-nosql-use-case-is-more-for-cloud-applications">F. NoSQL use case is more for Cloud applications.<a class="headerlink" href="#f-nosql-use-case-is-more-for-cloud-applications" title="Permanent link">&para;</a></h3>
+<hr />
+<h2 id="4-when-to-use-nosql">4. When to use NoSQL?<a class="headerlink" href="#4-when-to-use-nosql" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Fast-paced Agile development</li>
+<li>Storage of structured and semi-structured data</li>
+<li>Huge volumes of data</li>
+<li>Requirements for scale-out architecture</li>
+<li>Modern application paradigms like micro-services and real-time streaming.</li>
+</ul>
+<hr />
+<h2 id="5-nosql-db-misconceptions">5. NoSQL DB Misconceptions<a class="headerlink" href="#5-nosql-db-misconceptions" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Relationship data is best suited for relational databases.</strong></li>
+<li>
+<p>A common misconception is that NoSQL databases don't store relationship data well. NoSQL databases can store relationship data — they just store it differently than relational databases do. In fact, when compared with relational databases, many find modelling relationship data in NoSQL databases to be easier, because related data doesn't have to be split between tables. NoSQL data models allow related data to be nested within a single data structure.</p>
+</li>
+<li>
+<p><strong>NoSQL databases don't support ACID transactions.</strong></p>
+</li>
+<li>Another common misconception is that NoSQL databases don't support ACID transactions. Some NoSQL databases like MongoDB do, in fact, support ACID transactions.</li>
+</ol>
+<hr />
+<h2 id="6-types-of-nosql-data-models">6. Types of NoSQL Data Models<a class="headerlink" href="#6-types-of-nosql-data-models" title="Permanent link">&para;</a></h2>
+<h3 id="1-key-value-stores">1. Key-Value Stores<a class="headerlink" href="#1-key-value-stores" title="Permanent link">&para;</a></h3>
+<ul>
+<li>The simplest type of NoSQL database is a key-value store. Every data element in the database is stored as a key value pair consisting of an attribute name (or "key") and a value. In a sense, a key-value store is like a relational database with only two columns: the key or attribute name (such as "state") and the value (such as "Alaska").</li>
+<li>Use cases include shopping carts, user preferences, and user profiles.</li>
+<li>e.g., Oracle NoSQL, Amazon DynamoDB, MongoDB also supports Key-Value store, Redis.</li>
+<li>A key-value database associates a value (which can be anything from a number or simple string to a complex object) with a key, which is used to keep track of the object. In its simplest form, a key-value store is like a dictionary/array/map object as it exists in most programming paradigms, but which is stored in a persistent way and managed by a DBMS.</li>
+<li>Key-value databases use compact, efficient index structures to be able to quickly and reliably locate a value by its key, making them ideal for systems that need to be able to find and retrieve data in constant time.</li>
+<li>There are several use-cases where choosing a key value store approach is an optimal solution:</li>
+<li>a) Real time random data access, e.g., user session attributes in an online application such as gaming or finance.</li>
+<li>b) Caching mechanism for frequently accessed data or configuration based on keys.</li>
+<li>c) Application is designed on simple key-based queries.</li>
+</ul>
+<h3 id="2-column-oriented-columnar-c-store-wide-column">2. Column-Oriented / Columnar / C-Store / Wide-Column<a class="headerlink" href="#2-column-oriented-columnar-c-store-wide-column" title="Permanent link">&para;</a></h3>
+<ul>
+<li>The data is stored such that each row of a column will be next to other rows from that same column.</li>
+<li>While a relational database stores data in rows and reads data row by row, a column store is organised as a set of columns. This means that when you want to run analytics on a small number of columns, you can read those columns directly without consuming memory with the unwanted data. Columns are often of the same type and benefit from more efficient compression, making reads even faster. Columnar databases can quickly aggregate the value of a given column (adding up the total sales for the year, for example). Use cases include analytics.</li>
+<li>e.g., Cassandra, RedShift, Snowflake.</li>
+</ul>
+<h3 id="3-document-based-stores">3. Document Based Stores<a class="headerlink" href="#3-document-based-stores" title="Permanent link">&para;</a></h3>
+<ul>
+<li>This DB stores data in documents similar to JSON (JavaScript Object Notation) objects. Each document contains pairs of fields and values. The values can typically be a variety of types including strings, numbers, booleans, arrays, or objects.</li>
+<li>Use cases include e-commerce platforms, trading platforms, and mobile app development across industries.</li>
+<li>Supports ACID properties hence, suitable for Transactions.</li>
+<li>e.g., MongoDB, CouchDB.</li>
+</ul>
+<h3 id="4-graph-based-stores">4. Graph Based Stores<a class="headerlink" href="#4-graph-based-stores" title="Permanent link">&para;</a></h3>
+<ul>
+<li>A graph database focuses on the relationship between data elements. Each element is stored as a node (such as a person in a social media graph). The connections between elements are called links or relationships. In a graph database, connections are first-class elements of the database, stored directly. In relational databases, links are implied, using data to express the relationships.</li>
+<li>A graph database is optimised to capture and search the connections between data elements, overcoming the overhead associated with JOINing multiple tables in SQL.</li>
+<li>Very few real-world business systems can survive solely on graph queries. As a result graph databases are usually run alongside other more traditional databases.</li>
+<li>Use cases include fraud detection, social networks, and knowledge graphs.</li>
+</ul>
+<hr />
+<h2 id="7-nosql-databases-disadvantages">7. NoSQL Databases Disadvantages<a class="headerlink" href="#7-nosql-databases-disadvantages" title="Permanent link">&para;</a></h2>
+<h3 id="data-redundancy">Data Redundancy<a class="headerlink" href="#data-redundancy" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Since data models in NoSQL databases are typically optimised for queries and not for reducing data duplication, NoSQL databases can be larger than SQL databases. Storage is currently so cheap that most consider this a minor drawback, and some NoSQL databases also support compression to reduce the storage footprint.</li>
+<li>Update &amp; Delete operations are costly.</li>
+</ul>
+<h3 id="all-type-of-nosql-data-model-doesnt-fulfil-all-of-your-application-needs">All type of NoSQL Data model doesn't fulfil all of your application needs<a class="headerlink" href="#all-type-of-nosql-data-model-doesnt-fulfil-all-of-your-application-needs" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p>Depending on the NoSQL database type you select, you may not be able to achieve all of your use cases in a single database. For example, graph databases are excellent for analysing relationships in your data but may not provide what you need for everyday retrieval of the data such as range queries. When selecting a NoSQL database, consider what your use cases will be and if a general purpose database like MongoDB would be a better option.</p>
+</li>
+<li>
+<p>Doesn't support ACID properties in general.</p>
+</li>
+<li>Doesn't support data entry with consistency constraints.</li>
+</ul>
+<hr />
+<h2 id="8-sql-vs-nosql">8. SQL vs NoSQL<a class="headerlink" href="#8-sql-vs-nosql" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>SQL Databases</th>
+<th>NoSQL Databases</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Data Storage Model</td>
+<td>Tables with fixed rows and columns</td>
+<td>Document: JSON documents, Key-value: key-value pairs, Wide-column: tables with rows and dynamic columns, Graph: nodes and edges</td>
+</tr>
+<tr>
+<td>Development History</td>
+<td>Developed in the 1970s with a focus on reducing data duplication</td>
+<td>Developed in the late 2000s with a focus on scaling and allowing for rapid application change driven by agile and DevOps practices</td>
+</tr>
+<tr>
+<td>Examples</td>
+<td>Oracle, MySQL, Microsoft SQL Server, and PostgreSQL</td>
+<td>Document: MongoDB and CouchDB, Key-value: Redis and DynamoDB, Wide-column: Cassandra and HBase, Graph: Neo4j and Amazon Neptune</td>
+</tr>
+<tr>
+<td>Primary Purpose</td>
+<td>General Purpose</td>
+<td>Document: general purpose, Key-value: large amounts of data with simple lookup queries, Wide-column: large amounts of data with predictable query patterns, Graph: analyzing and traversing relationships between connected data</td>
+</tr>
+<tr>
+<td>Schemas</td>
+<td>Fixed</td>
+<td>Flexible</td>
+</tr>
+<tr>
+<td>Scaling</td>
+<td>Vertical (Scale-up)</td>
+<td>Horizontal (scale-out across commodity servers)</td>
+</tr>
+<tr>
+<td>ACID Properties</td>
+<td>Supported</td>
+<td>Not Supported, except in DB like MongoDB etc.</td>
+</tr>
+<tr>
+<td>JOINS</td>
+<td>Typically Required</td>
+<td>Typically not required</td>
+</tr>
+<tr>
+<td>Data to object mapping</td>
+<td>Required object-relational mapping</td>
+<td>Many do not require ORMs. MongoDB documents map directly to data structures in most popular programming languages.</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "navigation.indexes", "search.highlight", "search.suggest", "content.code.copy", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
