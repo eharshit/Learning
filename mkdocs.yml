@@ -1,0 +1,82 @@
+site_name: LOCKIN Notes
+site_url: https://eharshit.github.io/Learning/
+site_description: Study notes for CS subjects — DBMS, CN, OS and more.
+site_author: Harshit
+
+docs_dir: .
+site_dir: site
+exclude_docs: |
+  site/
+  .git/
+  .gitignore
+
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: deep purple
+      accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+    - scheme: default
+      primary: deep purple
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+  font:
+    text: Inter
+    code: JetBrains Mono
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.top
+    - navigation.indexes
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - toc.follow
+  icon:
+    repo: fontawesome/brands/github
+
+repo_url: https://github.com/eharshit/Learning
+repo_name: eharshit/Learning
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - tables
+  - toc:
+      permalink: true
+  - attr_list
+  - md_in_html
+
+nav:
+  - Home: index.md
+  - DBMS:
+      - DBMS/index.md
+      - LEC 1 - Introduction: DBMS/1_Introduction.md
+      - LEC 2 - Architecture: DBMS/2_Architecture.md
+      - LEC 3 - ER Model: DBMS/3_ER_model.md
+      - LEC 4 - Extended ER: DBMS/4_Extended_ER.md
+      - LEC 5 - Relational Model: DBMS/5_Relational_model.md
+      - LEC 6 - ER to Relational Model: DBMS/6_Transform_ER_to_Relational Model.md
+      - LEC 7 - SQL: DBMS/7_SQL.md
+      - LEC 8 - Normalisation: DBMS/8_Normalisation.md
+      - LEC 9 - Transactions: DBMS/9_Transaction.md
+      - LEC 10 - Atomicity & Durability: DBMS/10_Atomicity and Durability in Transactions.md
+      - LEC 11 - Indexing: DBMS/11_Indexing_DBMS.md
+      - LEC 12 - NoSQL: DBMS/12_NO_SQL.md
+      - LEC 13 - Types of Databases: DBMS/13_Types_of_Database.md
+      - LEC 14 - Clustering: DBMS/14_Clustering_in_DBMS.md
+      - LEC 15 - Partitioning & Sharding: DBMS/15_Partitioning & Sharding(DB Optimization).md
+      - LEC 16 - CAP Theorem: DBMS/16_CAP_theorem.md
