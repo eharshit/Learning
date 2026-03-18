@@ -125,4 +125,4 @@ An Entity is a "thing" or "object" in the real world that is distinguishable fro
 
 ## 7. ER Notations
 
-![alt text](DBMS/images/image3.png)
+![alt text](images/image3.png)
