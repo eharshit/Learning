@@ -30,7 +30,7 @@ The main objective of three level architecture is to enable multiple users to ac
 - At the external level, a database contains several schemas that sometimes called as subschema. The subschema is used to describe the different view of the database.
 - Views also provide a security mechanism to prevent users from accessing certain parts of DB.
 
-![alt text](image.png)
+![DBMS/images/image2.png](images/image2.png)
 
 ---
 
@@ -128,4 +128,4 @@ Client machines, on which remote DB users work, and server machines on which DB 
   2. Data integrity, App server acts as a middle layer between client and DB, which minimize the chances of data corruption.
   3. Security, client can't directly access DB, hence it is more secure.
 
-![alt text](image-1.png)
+![DBMS/images/image-1.png](images/image-1.png)
