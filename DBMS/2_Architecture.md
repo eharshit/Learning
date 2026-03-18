@@ -128,4 +128,4 @@ Client machines, on which remote DB users work, and server machines on which DB 
   2. Data integrity, App server acts as a middle layer between client and DB, which minimize the chances of data corruption.
   3. Security, client can't directly access DB, hence it is more secure.
 
-![DBMS/images/image-1.png](images/image-1.png)
+![DBMS/images/image1.png](images/image1.png)
